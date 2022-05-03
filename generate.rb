@@ -96,7 +96,7 @@ dirs.each do |mod|
         target = "./#{File.basename(d)}"
 
         log "Removing #{$root}/#{target}"
-        FileUtils.rm_r(target)
+        FileUtils.rm_r(target) if File.exists?(target)
         
         log "linking #{$root}/#{d} to #{$root}/#{target}"
         FileUtils.ln_sf(d, target)
