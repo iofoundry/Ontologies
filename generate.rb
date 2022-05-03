@@ -67,9 +67,10 @@ end
 
 def extract(git, mod, version, prefix)
   file = git.archive(version, nil, { format: 'tar', prefix: "#{prefix}#{mod}/" })
+  list = `tar tf #{file}`.split("\n").select { |f| f =~ /\.rdf$/ }
   Dir.chdir($root) do
     log "Extracting #{version} to #{prefix}#{mod}/"
-    system('tar', 'xf', file, '--include', '*.rdf')
+    system('tar', 'xvf', file, *list)
   end
 end
 
