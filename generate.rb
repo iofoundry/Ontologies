@@ -66,10 +66,16 @@ File.open('.gitmodules') do |f|
 end
 
 def extract(git, mod, version, prefix)
-  file = git.archive(version, nil, { format: 'tar', prefix: "#{prefix}#{mod}/" })
+  dir = "#{prefix}#{mod}"
+
+  log "Extracting #{mod} version #{version}"
+  file = git.archive(version, nil, { format: 'tar', prefix: "#{dir}/" })
   list = `tar tf #{file}`.split("\n").select { |f| f =~ /\.rdf$/ }
   Dir.chdir($root) do
-    log "Extracting #{version} to #{prefix}#{mod}/"
+    log "Removing #{$root}/#{dir}"
+    FileUtils.rm_r(dir) if File.exists?(dir)
+    
+    log "Extracting rdf files for #{version} to #{$root}/#{dir}/"
     system('tar', 'xvf', file, *list)
   end
 end
@@ -89,10 +95,10 @@ dirs.each do |mod|
       Dir["#{prefix}/*"].select { |d| File.directory?(d) }.each do |d|
         target = "./#{File.basename(d)}"
 
-        log "Removing #{target}"
+        log "Removing #{$root}/#{target}"
         FileUtils.rm_r(target)
         
-        log "linking #{d} to #{target}"
+        log "linking #{$root}/#{d} to #{$root}/#{target}"
         FileUtils.ln_sf(d, target)
       end
     end
