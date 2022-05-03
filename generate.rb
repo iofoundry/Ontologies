@@ -9,7 +9,7 @@ end
 
 log "started update"
 
-$root = File.join('..', 'www')
+$root = File.expand_path(File.join('..', 'www'))
 Dir.mkdir($root) unless File.exists?($root)
 
 def convert_readme
