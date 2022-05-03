@@ -109,6 +109,6 @@ end
 
 convert_readme
 
-puts "#{Time.now.utc}: completed update"
+log "completed update"
 
 
