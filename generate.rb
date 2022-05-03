@@ -90,7 +90,7 @@ dirs.each do |mod|
         target = "./#{File.basename(d)}"
 
         log "Removing #{target}"
-        FileUtils.rm_rf(target)
+        FileUtils.rm_r(target)
         
         log "linking #{d} to #{target}"
         FileUtils.ln_sf(d, target)
